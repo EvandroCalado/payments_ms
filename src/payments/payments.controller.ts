@@ -7,17 +7,23 @@ export class PaymentsController {
 
   @Post('create-payment-session')
   createPaymentSession() {
-    return 'createPaymentSession';
+    return this.paymentsService.createPaymentSession();
   }
 
   @Get('success')
   success() {
-    return 'success';
+    return {
+      ok: true,
+      message: 'success',
+    };
   }
 
   @Get('cancel')
   cancel() {
-    return 'cancel';
+    return {
+      ok: true,
+      message: 'cancel',
+    };
   }
 
   @Post('stripe-webhook')
