@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { PaymentSessionDto } from 'src/configs/dto/payment-session.dto';
 import { envs } from 'src/configs/envs';
 import Stripe from 'stripe';
 
@@ -6,21 +7,23 @@ import Stripe from 'stripe';
 export class PaymentsService {
   private readonly stripe = new Stripe(envs.STRIPE_SECRET);
 
-  async createPaymentSession() {
+  async createPaymentSession(paymentSessionDto: PaymentSessionDto) {
+    const { currency, items } = paymentSessionDto;
+
+    const lineItems = items.map((item) => ({
+      price_data: {
+        currency: currency,
+        product_data: {
+          name: item.name,
+        },
+        unit_amount: Math.round(item.price * 100),
+      },
+      quantity: item.quantity,
+    }));
+
     const session = await this.stripe.checkout.sessions.create({
       payment_intent_data: {},
-      line_items: [
-        {
-          price_data: {
-            currency: 'usd',
-            product_data: {
-              name: 'T-shirt',
-            },
-            unit_amount: 2000,
-          },
-          quantity: 2,
-        },
-      ],
+      line_items: lineItems,
       mode: 'payment',
       success_url: 'http://localhost:3003/api/payments/success',
       cancel_url: 'http://localhost:3003/api/payments/cancel',
