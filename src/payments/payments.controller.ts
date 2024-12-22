@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { PaymentSessionDto } from 'src/configs/dto/payment-session.dto';
+import { PaymentSessionDto } from 'src/payments/dto/payment-session.dto';
 import { PaymentsService } from './payments.service';
 
 @Controller('payments')

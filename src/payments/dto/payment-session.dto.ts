@@ -23,6 +23,9 @@ export class PaymentSessionItemsDto {
 
 export class PaymentSessionDto {
   @IsString()
+  orderId: string;
+
+  @IsString()
   currency: string;
 
   @IsArray()
