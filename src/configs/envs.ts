@@ -21,10 +21,7 @@ const envVarsSchema = joi
   })
   .unknown(true);
 
-const { error, value } = envVarsSchema.validate({
-  ...process.env,
-  NATS_SERVERS: process.env.NATS_SERVERS?.split(','),
-});
+const { error, value } = envVarsSchema.validate(process.env);
 
 if (error) {
   throw new Error(`Config validation error: ${error.message}`);
